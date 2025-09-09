@@ -1,0 +1,19 @@
+@startuml Workflow Process
+!theme plain
+
+participant "Product Manager (agent)" as PM #lightblue
+participant "Software Architect (agent)" as SA #lightblue
+participant "Jira Task Specialist (agent)" as JTS #lightblue
+participant "Notion" as N #lightgreen
+
+PM -> SA: Produces requirements
+note right: Requirements document\nwith specifications
+SA -> SA: Creates design
+note right: System architecture\nand technical design
+SA -> JTS: Provides design
+JTS -> JTS: Breaks down tasks
+note right: Decomposes design into\nactionable development tasks
+JTS -> N: Stores tasks (via MCP)
+note right: Tasks with acceptance criteria,\ndependencies, and sprint planning
+
+@enduml
