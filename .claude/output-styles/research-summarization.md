@@ -1,5 +1,5 @@
 ---
-name: Paper Summary Style
+name: Research Summarization Style
 description: Generate structured research paper summaries in markdown format saved to reviews directory
 ---
 
