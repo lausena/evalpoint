@@ -1,0 +1,242 @@
+@startuml EvalPoint Data Flow Architecture
+!theme aws-orange
+
+title EvalPoint - Data Flow Architecture\nReal-time Learning Analytics & Personalization Pipeline
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #007bff
+skinparam noteBackgroundColor #fff3cd
+skinparam noteBorderColor #ffc107
+
+' Data Sources
+package "Data Sources" as sources #e8f5e8 {
+  component "Student Interactions" as interactions {
+    component "Click Events" as clicks
+    component "Response Data" as responses
+    component "Time on Task" as time_data
+    component "Navigation Patterns" as navigation
+  }
+  
+  component "Assessment Data" as assessment_data {
+    component "Formative Responses" as formative_responses
+    component "Competency Results" as competency_results
+    component "Alternative Assessment" as alt_assessment
+    component "Bias Detection Results" as bias_results
+  }
+  
+  component "Accommodation Data" as accommodation_data {
+    component "IEP/504 Plans" as iep_data
+    component "Accommodation Usage" as acc_usage
+    component "Effectiveness Metrics" as effectiveness_data
+    component "Self-Advocacy Events" as self_advocacy
+  }
+  
+  component "Content Interaction" as content_interaction {
+    component "Content Views" as content_views
+    component "Modality Preferences" as modality_prefs
+    component "Completion Rates" as completion_rates
+    component "Engagement Signals" as engagement
+  }
+}
+
+' Real-time Stream Processing
+package "Real-time Stream Processing" as stream_processing #fff3e0 {
+  component "Apache Kafka" as kafka {
+    queue "learning-events" as learning_stream
+    queue "assessment-events" as assessment_stream
+    queue "accommodation-events" as accommodation_stream
+    queue "content-events" as content_stream
+  }
+  
+  component "Apache Kafka Streams" as kafka_streams {
+    component "Event Enrichment" as enrichment
+    component "Real-time Aggregation" as aggregation
+    component "Pattern Detection" as pattern_detection
+    component "Anomaly Detection" as anomaly_detection
+  }
+  
+  component "Redis Streams" as redis_streams {
+    component "Session State" as session_state
+    component "Real-time Cache" as realtime_cache
+    component "Live Dashboards" as live_dashboards
+  }
+}
+
+' Data Processing Pipeline
+package "Data Processing Pipeline" as processing #f3e5f5 {
+  component "Batch Processing" as batch {
+    component "Apache Spark" as spark
+    component "ETL Jobs" as etl
+    component "Data Validation" as validation
+    component "Privacy Compliance" as privacy_processing
+  }
+  
+  component "Feature Engineering" as feature_eng {
+    component "Learning Features" as learning_features
+    component "Behavioral Features" as behavioral_features
+    component "Context Features" as context_features
+    component "Temporal Features" as temporal_features
+  }
+  
+  component "ML Pipeline" as ml_pipeline {
+    component "Model Training" as training
+    component "Model Validation" as model_validation
+    component "A/B Testing" as ab_testing
+    component "Model Deployment" as deployment
+  }
+}
+
+' Data Storage Layer
+package "Data Storage Layer" as storage #e1f5fe {
+  database "Operational Data" as operational {
+    database "PostgreSQL\n(Transactional)" as postgres
+    database "MongoDB\n(Content & Profiles)" as mongodb
+    database "Redis\n(Cache & Sessions)" as redis
+  }
+  
+  database "Analytics Data" as analytics_storage {
+    database "ClickHouse\n(Time Series)" as clickhouse
+    database "Data Lake\n(S3/HDFS)" as data_lake
+    database "Elasticsearch\n(Search & Logs)" as elasticsearch
+  }
+  
+  database "ML Data" as ml_storage {
+    database "Feature Store\n(Feast)" as feature_store
+    database "Model Registry\n(MLflow)" as model_registry
+    database "Training Data\n(S3)" as training_data
+  }
+}
+
+' Real-time Applications
+package "Real-time Applications" as realtime_apps #f0f8ff {
+  component "Personalization Engine" as personalization {
+    component "Content Recommendation" as content_rec
+    component "Difficulty Adaptation" as difficulty_adapt
+    component "Learning Path Optimization" as path_opt
+    component "Intervention Triggers" as intervention_triggers
+  }
+  
+  component "Real-time Analytics" as realtime_analytics {
+    component "Live Dashboards" as dashboards
+    component "Progress Tracking" as progress_tracking
+    component "Engagement Monitoring" as engagement_monitoring
+    component "Alert System" as alerts
+  }
+  
+  component "Adaptive Interface" as adaptive_interface {
+    component "UI Adaptation" as ui_adaptation
+    component "Accommodation Application" as acc_application
+    component "Cognitive Load Adjustment" as cognitive_adjustment
+    component "Accessibility Optimization" as accessibility_opt
+  }
+}
+
+' Analytics & Reporting
+package "Analytics & Reporting" as reporting #f5f5f5 {
+  component "Business Intelligence" as bi {
+    component "Learning Outcomes" as outcomes_bi
+    component "Equity Metrics" as equity_bi
+    component "Engagement Analytics" as engagement_bi
+    component "Effectiveness Reports" as effectiveness_bi
+  }
+  
+  component "Research Analytics" as research {
+    component "Anonymized Datasets" as anonymized_data
+    component "Correlation Analysis" as correlation
+    component "Longitudinal Studies" as longitudinal
+    component "A/B Test Results" as ab_results
+  }
+  
+  component "Compliance Reporting" as compliance {
+    component "Privacy Reports" as privacy_reports
+    component "Accessibility Metrics" as accessibility_metrics
+    component "Data Usage Reports" as usage_reports
+    component "Audit Trails" as audit_trails
+  }
+}
+
+' Data Flow Connections
+
+' Sources to Kafka
+interactions --> learning_stream : real-time events
+assessment_data --> assessment_stream : assessment events
+accommodation_data --> accommodation_stream : accommodation events
+content_interaction --> content_stream : content events
+
+' Kafka to Stream Processing
+learning_stream --> kafka_streams
+assessment_stream --> kafka_streams
+accommodation_stream --> kafka_streams
+content_stream --> kafka_streams
+
+' Stream Processing
+kafka_streams --> enrichment : enrich events
+enrichment --> aggregation : aggregate data
+aggregation --> pattern_detection : detect patterns
+pattern_detection --> anomaly_detection : find anomalies
+
+' Real-time Applications
+kafka_streams --> personalization : streaming ML
+kafka_streams --> realtime_analytics : live analytics
+kafka_streams --> adaptive_interface : UI adaptation
+
+' Stream to Storage
+kafka_streams --> redis_streams : real-time state
+kafka_streams --> clickhouse : time series data
+kafka_streams --> elasticsearch : searchable logs
+
+' Batch Processing
+kafka --> batch : batch consumption
+mongodb --> batch : profile data
+postgres --> batch : transactional data
+
+batch --> feature_eng : feature creation
+feature_eng --> ml_pipeline : ML training
+ml_pipeline --> model_registry : model storage
+ml_pipeline --> personalization : model deployment
+
+' Storage Interactions
+personalization --> feature_store : feature serving
+personalization --> redis : real-time cache
+realtime_analytics --> clickhouse : query analytics
+adaptive_interface --> postgres : user preferences
+
+' Analytics and Reporting
+clickhouse --> bi : analytics queries
+data_lake --> research : research datasets
+elasticsearch --> compliance : audit queries
+feature_store --> bi : feature analytics
+
+' Real-time Feedback Loops
+personalization --> learning_stream : adaptation events
+realtime_analytics --> accommodation_stream : intervention events
+adaptive_interface --> content_stream : UI events
+
+' Privacy and Compliance Flows
+batch --> privacy_processing : privacy compliance
+privacy_processing --> anonymized_data : research data
+privacy_processing --> audit_trails : compliance logs
+
+' Notes with Data Flow Specifications
+note right of kafka : Event Schema:\n- User ID (hashed)\n- Timestamp\n- Event Type\n- Context Data\n- Privacy Flags
+
+note right of personalization : <200ms response time\nfor real-time adaptations\nwith fallback to rules
+
+note right of clickhouse : Time-series optimized\nfor educational analytics\n90-day hot storage\n7-year archive
+
+note right of feature_store : Sub-10ms feature serving\nfor real-time ML inference\nwith consistency guarantees
+
+note bottom of privacy_processing : FERPA/COPPA compliant\ndata anonymization\nwith k-anonymity ≥ 5
+
+' Performance Annotations
+note top of kafka_streams : Processes 100K+ events/sec\nwith <100ms latency\nfor real-time insights
+
+note top of realtime_analytics : Updates dashboards\nevery 30 seconds\nwith <1% data loss
+
+' Data Retention Policies
+note bottom of data_lake : Data Retention:\n- Raw events: 7 years\n- Aggregated: 10 years\n- Anonymized: Indefinite\n- PII: As per policy
+
+@enduml

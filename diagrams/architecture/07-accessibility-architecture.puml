@@ -1,0 +1,289 @@
+@startuml EvalPoint Accessibility Architecture
+!theme aws-orange
+
+title EvalPoint - Accessibility Architecture\nUniversal Design for Learning (UDL) & WCAG 2.1 AA+ Implementation
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #28a745
+skinparam noteBackgroundColor #d1ecf1
+skinparam noteBorderColor #17a2b8
+
+' Diverse User Base
+package "Diverse User Base" as user_base #e8f5e8 {
+  actor "Neurotypical Students" as neurotypical #lightblue
+  actor "ADHD Students" as adhd #lightcoral
+  actor "Autistic Students" as autism #lightgreen
+  actor "Learning Disability Students" as ld #lightyellow
+  actor "Twice-Exceptional Students" as twice_exceptional #lightpink
+  actor "Visual Impairment Users" as visual_impairment #lightgray
+  actor "Hearing Impairment Users" as hearing_impairment #lightsteelblue
+  actor "Motor Impairment Users" as motor_impairment #lightcyan
+}
+
+' Accessibility Input Layer
+package "Accessibility Input Layer" as input_layer #e3f2fd {
+  component "Multi-Modal Input Support" as multimodal_input {
+    component "Keyboard Navigation" as keyboard_nav
+    component "Voice Recognition" as voice_recognition
+    component "Eye Tracking Input" as eye_tracking
+    component "Switch Access" as switch_access
+    component "Touch & Gesture" as touch_gesture
+    component "Brain-Computer Interface" as bci
+  }
+  
+  component "Assistive Technology Integration" as at_integration {
+    component "Screen Reader APIs\n(JAWS, NVDA, VoiceOver)" as screen_readers
+    component "Dragon NaturallySpeaking" as dragon
+    component "Tobii Eye Trackers" as tobii
+    component "Alternative Keyboards" as alt_keyboards
+    component "Communication Devices" as communication_devices
+  }
+  
+  component "Input Adaptation" as input_adaptation {
+    component "Sensitivity Adjustment" as sensitivity
+    component "Timing Modifications" as timing_mods
+    component "Input Filtering" as input_filtering
+    component "Gesture Recognition" as gesture_recognition
+    component "Error Prevention" as error_prevention
+  }
+}
+
+' Content Adaptation Layer
+package "Content Adaptation Layer" as content_adaptation #fff3e0 {
+  component "Universal Design for Learning (UDL)" as udl {
+    component "Multiple Means of\nRepresentation" as representation
+    component "Multiple Means of\nEngagement" as engagement
+    component "Multiple Means of\nAction/Expression" as action_expression
+  }
+  
+  component "Representation Adaptations" as representation_adaptations {
+    component "Visual Content\n(Text, Images, Videos)" as visual_content
+    component "Auditory Content\n(Speech, Audio, Music)" as auditory_content
+    component "Tactile Content\n(Haptic, Braille)" as tactile_content
+    component "Multi-Sensory Content\n(Combined Modalities)" as multisensory_content
+  }
+  
+  component "Cognitive Support" as cognitive_support {
+    component "Cognitive Load Management" as cognitive_load
+    component "Memory Aids" as memory_aids
+    component "Attention Support" as attention_support
+    component "Executive Function Support" as executive_function
+    component "Processing Speed Adjustment" as processing_speed
+  }
+  
+  component "Language & Communication" as language_support {
+    component "Plain Language Processing" as plain_language
+    component "Multiple Language Support" as multilingual
+    component "Sign Language Integration" as sign_language
+    component "Symbol Communication" as symbol_communication
+    component "Text-to-Speech" as tts
+    component "Speech-to-Text" as stt
+  }
+}
+
+' Accommodation Engine
+package "Accommodation Engine" as accommodation_engine #f3e5f5 {
+  component "IEP/504 Plan Integration" as iep_integration {
+    component "Accommodation Parser" as acc_parser
+    component "Legal Requirement Mapping" as legal_mapping
+    component "Automatic Application" as auto_application
+    component "Progress Monitoring" as progress_monitoring
+  }
+  
+  component "Dynamic Accommodation" as dynamic_accommodation {
+    component "Real-Time Adjustment" as realtime_adjustment
+    component "Context-Aware Adaptation" as context_adaptation
+    component "Predictive Accommodation" as predictive_acc
+    component "Machine Learning Optimization" as ml_optimization
+  }
+  
+  component "Accommodation Library" as accommodation_library {
+    component "Evidence-Based Accommodations" as evidence_based
+    component "Research-Validated Strategies" as research_validated
+    component "Customizable Options" as customizable
+    component "Effectiveness Tracking" as effectiveness_tracking
+  }
+  
+  component "Self-Advocacy Tools" as self_advocacy {
+    component "Student-Initiated Requests" as student_requests
+    component "Preference Settings" as preference_settings
+    component "Feedback Mechanisms" as feedback_mechanisms
+    component "Empowerment Features" as empowerment
+  }
+}
+
+' Accessibility Interface Layer
+package "Accessibility Interface Layer" as interface_layer #e1f5fe {
+  component "WCAG 2.1 AA+ Compliance" as wcag_compliance {
+    component "Perceivable\n(Alt text, Captions, Contrast)" as perceivable
+    component "Operable\n(Keyboard, Navigation)" as operable
+    component "Understandable\n(Readable, Predictable)" as understandable
+    component "Robust\n(Compatible, Future-proof)" as robust
+  }
+  
+  component "Responsive Design" as responsive_design {
+    component "Mobile Accessibility" as mobile_accessibility
+    component "Tablet Optimization" as tablet_optimization
+    component "Desktop Compatibility" as desktop_compatibility
+    component "Large Display Support" as large_display
+  }
+  
+  component "Visual Accessibility" as visual_accessibility {
+    component "High Contrast Mode" as high_contrast
+    component "Color Blindness Support" as color_blindness
+    component "Font Size Scaling" as font_scaling
+    component "Zoom Functionality" as zoom_functionality
+    component "Dark/Light Mode Toggle" as theme_toggle
+  }
+  
+  component "Motor Accessibility" as motor_accessibility {
+    component "Click Target Sizing" as click_targets
+    component "Hover/Focus States" as hover_focus
+    component "Drag & Drop Alternatives" as drag_drop_alt
+    component "Timeout Extensions" as timeout_extensions
+  }
+}
+
+' Assessment Accessibility
+package "Assessment Accessibility" as assessment_accessibility #f8f9fa {
+  component "Alternative Assessment Methods" as alt_assessment {
+    component "Portfolio Assessment" as portfolio
+    component "Performance Assessment" as performance
+    component "Project-Based Assessment" as project_based
+    component "Oral Assessment" as oral_assessment
+    component "Technology-Enhanced Items" as tech_enhanced
+  }
+  
+  component "Assessment Accommodations" as assessment_accommodations {
+    component "Extended Time" as extended_time
+    component "Breaks & Scheduling" as breaks_scheduling
+    component "Alternative Formats" as alt_formats
+    component "Assistive Technology" as assessment_at
+    component "Reduced Distractions" as reduced_distractions
+  }
+  
+  component "Bias Detection & Mitigation" as bias_detection {
+    component "Cultural Bias Detection" as cultural_bias
+    component "Language Bias Detection" as language_bias
+    component "Accessibility Bias Detection" as accessibility_bias
+    component "Algorithmic Fairness" as algorithmic_fairness
+  }
+  
+  component "Competency-Based Evaluation" as competency_evaluation {
+    component "Mastery-Based Progression" as mastery_progression
+    component "Individual Growth Tracking" as growth_tracking
+    component "Multiple Evidence Sources" as multiple_evidence
+    component "Authentic Assessment" as authentic_assessment
+  }
+}
+
+' Analytics & Monitoring
+package "Accessibility Analytics & Monitoring" as accessibility_analytics #f5f5f5 {
+  component "Usage Analytics" as usage_analytics {
+    component "Accommodation Usage Tracking" as acc_usage_tracking
+    component "Feature Adoption Metrics" as feature_adoption
+    component "User Journey Analysis" as user_journey
+    component "Accessibility Heatmaps" as accessibility_heatmaps
+  }
+  
+  component "Effectiveness Monitoring" as effectiveness_monitoring {
+    component "Learning Outcome Correlation" as outcome_correlation
+    component "Engagement Impact Analysis" as engagement_impact
+    component "Accommodation Success Rates" as acc_success_rates
+    component "Comparative Analysis" as comparative_analysis
+  }
+  
+  component "Automated Testing" as automated_testing {
+    component "WCAG Compliance Testing" as wcag_testing
+    component "Screen Reader Testing" as screen_reader_testing
+    component "Color Contrast Validation" as contrast_validation
+    component "Keyboard Navigation Testing" as keyboard_testing
+  }
+  
+  component "Continuous Improvement" as continuous_improvement {
+    component "User Feedback Integration" as user_feedback
+    component "A/B Testing Framework" as accessibility_ab_testing
+    component "Research Partnership Data" as research_partnership
+    component "Best Practice Updates" as best_practice_updates
+  }
+}
+
+' Data Flow Connections
+
+' User base to input layer
+neurotypical --> multimodal_input
+adhd --> multimodal_input
+autism --> multimodal_input
+ld --> multimodal_input
+twice_exceptional --> multimodal_input
+visual_impairment --> at_integration
+hearing_impairment --> at_integration
+motor_impairment --> at_integration
+
+' Input layer to content adaptation
+multimodal_input --> udl
+at_integration --> representation_adaptations
+input_adaptation --> cognitive_support
+
+' Content adaptation to accommodation engine
+udl --> iep_integration
+representation_adaptations --> dynamic_accommodation
+cognitive_support --> accommodation_library
+language_support --> self_advocacy
+
+' Accommodation engine to interface layer
+iep_integration --> wcag_compliance
+dynamic_accommodation --> responsive_design
+accommodation_library --> visual_accessibility
+self_advocacy --> motor_accessibility
+
+' Interface layer to assessment accessibility
+wcag_compliance --> alt_assessment
+responsive_design --> assessment_accommodations
+visual_accessibility --> bias_detection
+motor_accessibility --> competency_evaluation
+
+' Assessment accessibility to analytics
+alt_assessment --> usage_analytics
+assessment_accommodations --> effectiveness_monitoring
+bias_detection --> automated_testing
+competency_evaluation --> continuous_improvement
+
+' Feedback loops
+usage_analytics --> dynamic_accommodation : usage insights
+effectiveness_monitoring --> accommodation_library : effectiveness data
+automated_testing --> wcag_compliance : compliance feedback
+continuous_improvement --> udl : improvement recommendations
+
+' Cross-layer connections
+self_advocacy --> usage_analytics : self-advocacy data
+bias_detection --> ml_optimization : bias mitigation
+effectiveness_tracking --> outcome_correlation : correlation data
+research_partnership --> evidence_based : research updates
+
+' Notes with Accessibility Specifications
+note right of udl : UDL Implementation:\n✓ Multiple representations\n✓ Choice and autonomy\n✓ Varied expression methods\n✓ Engagement optimization
+
+note right of wcag_compliance : WCAG 2.1 AA+ Standards:\n✓ 4.5:1 contrast ratio\n✓ Full keyboard navigation\n✓ Screen reader compatibility\n✓ Error identification
+
+note right of iep_integration : Legal Compliance:\n✓ IDEA requirements\n✓ Section 504 compliance\n✓ ADA accommodation\n✓ State-specific regulations
+
+note right of assessment_accommodations : Assessment Equity:\n✓ Standardized accommodations\n✓ Individual modifications\n✓ Technology integration\n✓ Bias-free evaluation
+
+' Performance specifications
+note top of dynamic_accommodation : Real-time adaptation:\n<200ms response time\nContext-aware adjustments\nPredictive optimization\nML-driven personalization
+
+note top of automated_testing : Continuous monitoring:\n24/7 accessibility testing\nAutomated WCAG validation\nReal-user monitoring\nCompliance reporting
+
+' Research and validation
+note bottom of research_partnership : Research validation:\nPartnership with universities\nLongitudinal studies\nEvidence-based practices\nContinuous improvement
+
+note bottom of effectiveness_monitoring : Success metrics:\nLearning outcome parity\nAccommodation effectiveness\nUser satisfaction scores\nEngagement improvements
+
+' Neurodiversity support
+note left of cognitive_support : Neurodiversity support:\n✓ ADHD-friendly design\n✓ Autism accommodations\n✓ Executive function aids\n✓ Sensory considerations
+
+@enduml

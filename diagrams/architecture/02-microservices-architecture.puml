@@ -1,0 +1,297 @@
+@startuml EvalPoint Microservices Architecture
+!theme aws-orange
+
+title EvalPoint - Microservices Architecture\nDomain-Driven Design with Educational Bounded Contexts
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #007bff
+
+' API Gateway
+package "API Gateway Layer" as api_gateway #e3f2fd {
+  component "Kong/Zuul\nAPI Gateway" as gateway {
+    interface "REST APIs" as rest_api
+    interface "GraphQL" as graphql_api
+    interface "WebSocket" as websocket_api
+  }
+  
+  component "Rate Limiting &\nAuthentication" as rate_limit
+  component "Request Routing &\nLoad Balancing" as routing
+}
+
+' Core Educational Services
+package "Core Educational Services" as core_services #e8f5e8 {
+  
+  component "Learning Engine Service" as learning_engine {
+    interface "Adaptive Content API" as content_api
+    interface "Learning Path API" as path_api
+    interface "Progress Tracking API" as progress_api
+    
+    component "Content Adaptation" as adaptation
+    component "Path Optimization" as path_opt
+    component "Cognitive Load Mgmt" as cognitive_load
+    component "Interest Integration" as interests
+  }
+  
+  component "Assessment Service" as assessment {
+    interface "Assessment API" as assessment_api
+    interface "Evaluation API" as eval_api
+    
+    component "Formative Assessment" as formative
+    component "Competency Tracking" as competency
+    component "Alternative Assessment" as alternative
+    component "Mastery Validation" as mastery
+  }
+  
+  component "Analytics Service" as analytics {
+    interface "Analytics API" as analytics_api
+    interface "Reporting API" as reporting_api
+    
+    component "Real-time Analytics" as realtime_analytics
+    component "Predictive Modeling" as predictive
+    component "Intervention Engine" as intervention
+    component "Pattern Recognition" as patterns
+  }
+  
+  component "Content Management Service" as content_mgmt {
+    interface "Content API" as content_mgmt_api
+    interface "Standards API" as standards_api
+    
+    component "Multi-modal Storage" as multimodal
+    component "Standards Alignment" as standards
+    component "Quality Assurance" as qa
+    component "Cultural Responsiveness" as cultural
+  }
+}
+
+' Domain Services
+package "Domain Services" as domain_services #fff3e0 {
+  
+  component "Student Management Service" as student_mgmt {
+    interface "Student API" as student_api
+    interface "Profile API" as profile_api
+    
+    component "Authentication & SSO" as auth
+    component "Learning Profiles" as profiles
+    component "Privacy Controls" as privacy
+    component "Family Portal Access" as family_access
+  }
+  
+  component "Accommodation Service" as accommodation {
+    interface "Accommodation API" as accommodation_api
+    interface "IEP/504 API" as iep_api
+    
+    component "IEP/504 Integration" as iep_integration
+    component "Real-time Application" as realtime_accommodation
+    component "Effectiveness Tracking" as effectiveness
+    component "Accommodation Library" as acc_library
+  }
+  
+  component "Collaboration Service" as collaboration {
+    interface "Collaboration API" as collaboration_api
+    interface "Communication API" as communication_api
+    
+    component "Peer Matching" as peer_matching
+    component "Real-time Collaboration" as realtime_collab
+    component "Communication Support" as comm_support
+    component "Social Skills Integration" as social_skills
+  }
+  
+  component "Curriculum Service" as curriculum {
+    interface "Curriculum API" as curriculum_api
+    interface "Objectives API" as objectives_api
+    
+    component "Learning Objectives" as objectives
+    component "Skill Progression" as skill_progression
+    component "Prerequisite Mapping" as prerequisites
+    component "Standards Management" as standards_mgmt
+  }
+}
+
+' AI/ML Services
+package "AI/ML Services" as ml_services #f3e5f5 {
+  
+  component "Personalization Engine" as personalization {
+    interface "Personalization API" as personalization_api
+    
+    component "Learning Path ML" as path_ml
+    component "Content Recommendation" as content_rec
+    component "Difficulty Adaptation" as difficulty_adapt
+    component "A/B Testing Framework" as ab_testing
+  }
+  
+  component "Bias Detection Service" as bias_detection {
+    interface "Bias Detection API" as bias_api
+    
+    component "Assessment Bias Detection" as assessment_bias
+    component "Algorithmic Fairness" as fairness
+    component "Demographic Analysis" as demographic
+    component "Mitigation Strategies" as mitigation
+  }
+  
+  component "Predictive Analytics" as predictive_analytics {
+    interface "Prediction API" as prediction_api
+    
+    component "At-Risk Identification" as at_risk
+    component "Learning Trajectory" as trajectory
+    component "Outcome Prediction" as outcome_pred
+    component "Intervention Triggers" as intervention_triggers
+  }
+}
+
+' Integration Services
+package "Integration Services" as integration_services #f5f5f5 {
+  
+  component "LMS Integration Service" as lms_integration {
+    interface "LMS API" as lms_api
+    
+    component "Canvas Integration" as canvas_int
+    component "Google Classroom" as google_int
+    component "LTI Compliance" as lti
+    component "Grade Passback" as grade_passback
+  }
+  
+  component "SIS Integration Service" as sis_integration {
+    interface "SIS API" as sis_api
+    
+    component "PowerSchool Connector" as powerschool_conn
+    component "Roster Sync" as roster_sync
+    component "Demographic Sync" as demographic_sync
+    component "Data Mapping" as data_mapping
+  }
+  
+  component "Assistive Technology Service" as at_service {
+    interface "AT API" as at_api
+    
+    component "Screen Reader Support" as screen_reader
+    component "Voice Recognition" as voice_rec
+    component "Switch Access" as switch_access
+    component "Eye Tracking" as eye_tracking
+  }
+}
+
+' Support Services
+package "Support Services" as support_services #f0f0f0 {
+  
+  component "Notification Service" as notification {
+    interface "Notification API" as notification_api
+    
+    component "Email Notifications" as email_notif
+    component "Push Notifications" as push_notif
+    component "In-App Messaging" as in_app_msg
+    component "Family Communications" as family_comm
+  }
+  
+  component "Audit & Logging Service" as audit {
+    interface "Audit API" as audit_api
+    
+    component "Compliance Logging" as compliance_log
+    component "Security Audit" as security_audit
+    component "Learning Analytics Log" as analytics_log
+    component "Privacy Audit Trail" as privacy_audit
+  }
+  
+  component "Configuration Service" as config {
+    interface "Config API" as config_api
+    
+    component "Feature Flags" as feature_flags
+    component "Environment Config" as env_config
+    component "A/B Test Config" as ab_config
+    component "Accessibility Settings" as accessibility_config
+  }
+}
+
+' Message Queue System
+package "Event Streaming & Messaging" as messaging #e1f5fe {
+  component "Apache Kafka" as kafka {
+    queue "Learning Events" as learning_events
+    queue "Assessment Events" as assessment_events
+    queue "Collaboration Events" as collaboration_events
+    queue "Analytics Events" as analytics_events
+  }
+  
+  component "Redis Pub/Sub" as redis_pubsub {
+    queue "Real-time Updates" as realtime_updates
+    queue "Cache Invalidation" as cache_invalidation
+  }
+}
+
+' External Integrations
+cloud "External Systems" as external {
+  component "Canvas LMS" as canvas_external
+  component "Google Classroom" as google_external
+  component "PowerSchool SIS" as powerschool_external
+  component "Assessment Platforms" as assessment_external
+  component "Assistive Technologies" as at_external
+}
+
+' API Gateway connections
+gateway --> learning_engine : routes requests
+gateway --> assessment : routes requests
+gateway --> analytics : routes requests
+gateway --> content_mgmt : routes requests
+gateway --> student_mgmt : routes requests
+gateway --> accommodation : routes requests
+
+' Core service interactions
+learning_engine --> personalization : ML recommendations
+learning_engine --> content_mgmt : content retrieval
+learning_engine --> curriculum : learning objectives
+learning_engine --> student_mgmt : learner profiles
+learning_engine --> accommodation : accommodations
+
+assessment --> bias_detection : bias analysis
+assessment --> analytics : assessment data
+assessment --> student_mgmt : learner progress
+assessment --> curriculum : assessment mapping
+
+analytics --> predictive_analytics : ML predictions
+analytics --> kafka : publishes events
+analytics --> student_mgmt : learner insights
+
+' Domain service interactions
+student_mgmt --> auth : authentication
+accommodation --> iep_integration : IEP/504 data
+collaboration --> realtime_collab : collaboration tools
+curriculum --> standards_mgmt : standards compliance
+
+' ML service interactions
+personalization --> kafka : learning events
+bias_detection --> audit : bias reports
+predictive_analytics --> intervention : triggers interventions
+
+' Integration service interactions
+lms_integration --> canvas_external : LMS sync
+sis_integration --> powerschool_external : student data
+at_service --> at_external : assistive tech
+
+' Event flows
+learning_engine --> kafka : publishes learning events
+assessment --> kafka : publishes assessment events
+collaboration --> kafka : publishes collaboration events
+analytics --> kafka : publishes analytics events
+
+kafka --> analytics : consumes all events
+kafka --> personalization : consumes learning events
+kafka --> bias_detection : consumes assessment events
+
+' Real-time updates
+redis_pubsub --> learning_engine : real-time adaptations
+redis_pubsub --> collaboration : real-time collaboration
+redis_pubsub --> analytics : real-time dashboards
+
+' Support service connections
+notification --> kafka : event-driven notifications
+audit --> kafka : audit trail events
+config --> feature_flags : feature management
+
+' Notes
+note right of learning_engine : Real-time adaptation\nwith cognitive load management
+note right of accommodation : Automatic accommodation\napplication from IEP/504
+note right of bias_detection : Continuous algorithmic\nfairness monitoring
+note right of personalization : ML-driven personalization\nwith A/B testing
+note bottom of kafka : Event-driven architecture\nfor real-time responsiveness
+
+@enduml

@@ -1,0 +1,234 @@
+# =============================================================================
+# EvalPoint Educational Platform - Development Docker Compose Configuration
+# Optimized for development with hot reload, debugging, and testing features
+# =============================================================================
+
+
+# =============================================================================
+# Development Services Configuration
+# =============================================================================
+services:
+  
+  # ===========================================================================
+  # MongoDB Development Service
+  # Development database with relaxed security for testing
+  # ===========================================================================
+  mongodb:
+    environment:
+      # Development database credentials
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: devpassword123
+      MONGO_INITDB_DATABASE: evalpoint_dev
+      MONGO_INITDB_USERNAME: dev_user
+      MONGO_INITDB_PASSWORD: devpassword123
+    
+    ports:
+      - "27018:27017"
+    
+    volumes:
+      - ./data/mongodb-dev:/data/db
+      - ./logs/mongodb-dev:/var/log/mongodb
+      - ./docker/mongodb/mongod-dev.conf:/etc/mongod.conf:ro
+    
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+    
+    # Faster health checks for development
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    
+    # Reduced resource limits for development
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # ===========================================================================
+  # Backend Development Service
+  # Development backend with hot reload and debugging
+  # ===========================================================================
+  backend:
+    build:
+      target: development
+    
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      
+      # Development database
+      MONGODB_URI: mongodb://dev_user:devpassword123@mongodb:27017/evalpoint_dev?authSource=evalpoint_dev
+      
+      # Development authentication (less secure for testing)
+      JWT_SECRET: dev_jwt_secret_key_for_development_only
+      JWT_EXPIRES_IN: 24h
+      JWT_REFRESH_SECRET: dev_refresh_secret_key
+      JWT_REFRESH_EXPIRES_IN: 7d
+      
+      # Development security settings
+      BCRYPT_ROUNDS: 4
+      RATE_LIMIT_WINDOW: 1
+      RATE_LIMIT_MAX_REQUESTS: 1000
+      
+      # Development platform settings
+      PLATFORM_NAME: EvalPoint Dev
+      PLATFORM_URL: http://localhost:3000
+      
+      # Development email storage
+      EMAIL_STORAGE_PATH: /app/data/emails-dev
+      
+      # Development compliance settings
+      COPPA_COMPLIANCE: false
+      FERPA_COMPLIANCE: false
+      GDPR_COMPLIANCE: false
+    
+    ports:
+      - "5002:5000"
+      - "9229:9229"  # Node.js debugging port
+    
+    volumes:
+      # Mount source code for hot reload
+      - ./backend/src:/app/src:ro
+      - ./backend/package.json:/app/package.json:ro
+      - ./logs/backend-dev:/app/logs
+      - ./data/emails-dev:/app/data/emails
+      
+      # Development tools
+      - ./backend/nodemon.json:/app/nodemon.json:ro
+    
+    # Faster health checks for development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 2
+      start_period: 10s
+    
+    # Reduced resource limits for development
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+  # ===========================================================================
+  # MongoDB Express - Database Administration Interface
+  # Web-based MongoDB admin tool for development
+  # ===========================================================================
+  mongo-express:
+    image: mongo-express:1.0.0
+    container_name: evalpoint-mongo-express
+    restart: unless-stopped
+    
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: devpassword123
+      ME_CONFIG_MONGODB_URL: mongodb://admin:devpassword123@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    
+    ports:
+      - "8081:8081"
+    
+    networks:
+      - evalpoint-network
+    
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  # ===========================================================================
+  # Development Tools Container
+  # Container with development and testing tools
+  # ===========================================================================
+  dev-tools:
+    image: node:18.17.0-alpine
+    container_name: evalpoint-dev-tools
+    working_dir: /app
+    
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    
+    networks:
+      - evalpoint-network
+    
+    command: tail -f /dev/null  # Keep container running
+    
+    environment:
+      NODE_ENV: development
+
+  # ===========================================================================
+  # Redis Development Service
+  # Development cache with relaxed security
+  # ===========================================================================
+  redis:
+    environment:
+      REDIS_PASSWORD: devredispassword
+    
+    ports:
+      - "6380:6379"
+    
+    volumes:
+      - ./data/redis-dev:/data
+    
+    command: ["redis-server", "--requirepass", "devredispassword"]
+
+  # ===========================================================================
+  # Test Database Service
+  # Separate database for running tests
+  # ===========================================================================
+  mongodb-test:
+    image: mongo:7.0.4
+    container_name: evalpoint-mongodb-test
+    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: test_admin
+      MONGO_INITDB_ROOT_PASSWORD: testpassword123
+      MONGO_INITDB_DATABASE: evalpoint_test
+      MONGO_INITDB_USERNAME: test_user
+      MONGO_INITDB_PASSWORD: testpassword123
+    
+    ports:
+      - "27019:27017"
+    
+    volumes:
+      - ./data/mongodb-test:/data/db
+      - ./docker/mongodb/init-mongo-test.js:/docker-entrypoint-initdb.d/init-mongo-test.js:ro
+    
+    networks:
+      - evalpoint-network
+    
+    # Faster health checks for testing
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 2s
+      retries: 2
+      start_period: 5s
+
+# =============================================================================
+# Development Network Configuration
+# =============================================================================
+networks:
+  evalpoint-network:
+    external: false
+
+# =============================================================================
+# Development Volume Configuration
+# =============================================================================
+volumes:
+  mongodb-data: null  # Override production volume
+  mongodb-logs: null  # Override production volume
+  backend-logs: null  # Override production volume
+  email-storage: null  # Override production volume

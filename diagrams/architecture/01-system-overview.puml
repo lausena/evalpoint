@@ -1,0 +1,184 @@
+@startuml EvalPoint System Overview
+!theme aws-orange
+!include <awslib/AWSCommon>
+!include <awslib/ApplicationIntegration/APIGateway>
+!include <awslib/Compute/ECS>
+!include <awslib/Database/RDS>
+!include <awslib/Database/ElastiCache>
+!include <awslib/Storage/S3>
+!include <awslib/MachineLearning/SageMaker>
+
+title EvalPoint - High-Level System Architecture\nPersonalized Learning Platform for Inclusive STEM Education
+
+!define RECTANGLE class
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #007bff
+skinparam arrowFontColor #007bff
+
+' Define color scheme for accessibility
+!define PRIMARY_COLOR #007bff
+!define SECONDARY_COLOR #6c757d
+!define SUCCESS_COLOR #28a745
+!define WARNING_COLOR #ffc107
+!define DANGER_COLOR #dc3545
+!define INFO_COLOR #17a2b8
+
+' User Groups
+actor "Students\n(Neurotypical &\nNeurodivergent)" as students #lightblue
+actor "Educators\n(General & Special Ed)" as educators #lightgreen
+actor "Families &\nCaregivers" as families #lightyellow
+actor "Administrators" as admins #lightcoral
+
+' Global Infrastructure Layer
+package "Global CDN & Edge Computing" as cdn_layer #f0f8ff {
+  component "CloudFlare CDN" as cdn
+  component "Edge Processing" as edge
+  component "Global Load Balancer" as glb
+}
+
+' Presentation Layer
+package "Presentation Layer" as presentation #e6f3ff {
+  component "React Web App\n(WCAG 2.1 AA+)" as webapp
+  component "Mobile Apps\n(iOS/Android)" as mobile
+  component "API Gateway" as gateway
+  component "Educator Portal" as educator_portal
+  component "Family Portal" as family_portal
+}
+
+' Application Services Layer
+package "Application Services" as app_services #f0f8ff {
+  component "Learning Engine\nService" as learning_engine
+  component "Assessment\nService" as assessment
+  component "Analytics\nService" as analytics
+  component "Content Management\nService" as content_mgmt
+}
+
+' Domain Services Layer
+package "Domain Services" as domain_services #e6f7ff {
+  component "Student Management\nService" as student_mgmt
+  component "Accommodation\nService" as accommodation
+  component "Collaboration\nService" as collaboration
+  component "Curriculum\nService" as curriculum
+}
+
+' AI/ML Pipeline
+package "AI/ML Pipeline" as ml_pipeline #fff0e6 {
+  component "Personalization\nEngine" as personalization
+  component "Bias Detection\nService" as bias_detection
+  component "Predictive\nModeling" as predictive
+  component "Content\nRecommendation" as recommendation
+}
+
+' Integration Layer
+package "Integration Layer" as integration #f5f5f5 {
+  component "LMS Integration\n(Canvas, Google)" as lms_integration
+  component "SIS Integration\n(PowerSchool)" as sis_integration
+  component "Assistive Tech\nIntegration" as at_integration
+  component "Assessment Platform\nIntegration" as assessment_integration
+}
+
+' Data Layer
+package "Data Layer" as data_layer #f8f9fa {
+  database "PostgreSQL\n(Transactional Data)" as postgres
+  database "MongoDB\n(Content & Profiles)" as mongodb
+  database "Redis\n(Caching & Sessions)" as redis
+  database "ClickHouse\n(Analytics Data)" as clickhouse
+  database "Elasticsearch\n(Search & Discovery)" as elasticsearch
+}
+
+' Infrastructure Layer
+package "Infrastructure Layer" as infrastructure #f0f0f0 {
+  component "Kubernetes\nClusters" as k8s
+  component "Service Mesh\n(Istio)" as service_mesh
+  component "Monitoring\n(Prometheus/Grafana)" as monitoring
+  component "Security\n(Zero Trust)" as security
+}
+
+' External Systems
+package "External Educational Systems" as external #f5f5f5 {
+  component "Canvas LMS" as canvas
+  component "Google Classroom" as google_classroom
+  component "PowerSchool SIS" as powerschool
+  component "Assessment Tools" as assessment_tools
+  component "Assistive Technologies" as assistive_tech
+}
+
+' User connections to presentation layer
+students --> cdn_layer
+educators --> cdn_layer
+families --> cdn_layer
+admins --> cdn_layer
+
+' CDN to presentation layer
+cdn --> webapp
+cdn --> mobile
+cdn --> educator_portal
+cdn --> family_portal
+
+' Presentation to application services
+gateway --> learning_engine
+gateway --> assessment
+gateway --> analytics
+gateway --> content_mgmt
+
+' Application services to domain services
+learning_engine --> student_mgmt
+learning_engine --> accommodation
+learning_engine --> curriculum
+assessment --> student_mgmt
+analytics --> student_mgmt
+content_mgmt --> curriculum
+
+' Application services to ML pipeline
+learning_engine --> personalization
+assessment --> bias_detection
+analytics --> predictive
+content_mgmt --> recommendation
+
+' Domain services to data layer
+student_mgmt --> postgres
+accommodation --> postgres
+collaboration --> mongodb
+curriculum --> mongodb
+analytics --> clickhouse
+
+' ML pipeline to data
+personalization --> redis
+bias_detection --> postgres
+predictive --> clickhouse
+recommendation --> elasticsearch
+
+' Integration layer connections
+integration --> external
+lms_integration --> canvas
+lms_integration --> google_classroom
+sis_integration --> powerschool
+assessment_integration --> assessment_tools
+at_integration --> assistive_tech
+
+' Infrastructure supporting everything
+infrastructure --> app_services
+infrastructure --> domain_services
+infrastructure --> ml_pipeline
+infrastructure --> data_layer
+
+' Key data flows
+note right of learning_engine : Real-time adaptation\nbased on learner interaction
+note right of accommodation : Automatic IEP/504\naccommodation application
+note right of bias_detection : Continuous monitoring\nfor assessment fairness
+note right of analytics : Privacy-preserving\nlearning analytics
+
+' Accessibility annotations
+note top of webapp : WCAG 2.1 AA+ Compliant\nMulti-modal interface\nAssistive tech compatible
+
+' Performance annotations
+note bottom of cdn_layer : <200ms global response\n99.9% uptime SLA\n100K+ concurrent users
+
+' Security annotations
+note bottom of security : FERPA/COPPA/GDPR\nZero-trust architecture\nEnd-to-end encryption
+
+@enduml

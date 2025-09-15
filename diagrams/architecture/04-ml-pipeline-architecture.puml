@@ -1,0 +1,296 @@
+@startuml EvalPoint AI/ML Pipeline Architecture
+!theme aws-orange
+
+title EvalPoint - AI/ML Pipeline Architecture\nPersonalization & Bias Detection for Inclusive Learning
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #007bff
+skinparam noteBackgroundColor #fff3cd
+
+' Data Sources for ML
+package "Educational Data Sources" as ml_sources #e8f5e8 {
+  component "Learning Interactions" as learning_data {
+    component "Response Patterns" as response_patterns
+    component "Time-on-Task Data" as time_data
+    component "Navigation Behavior" as navigation_behavior
+    component "Error Patterns" as error_patterns
+  }
+  
+  component "Student Profiles" as profile_data {
+    component "Cognitive Profiles" as cognitive_profiles
+    component "Learning Preferences" as learning_prefs
+    component "Accommodation Needs" as accommodation_needs
+    component "Interest Areas" as interest_areas
+  }
+  
+  component "Assessment Data" as assessment_ml_data {
+    component "Formative Results" as formative_results
+    component "Competency Progression" as competency_progression
+    component "Alternative Assessment" as alt_assessment_data
+    component "Bias Indicators" as bias_indicators
+  }
+  
+  component "Content Metadata" as content_metadata {
+    component "Difficulty Levels" as difficulty_levels
+    component "Learning Objectives" as learning_objectives
+    component "Modality Types" as modality_types
+    component "Cultural Context" as cultural_context
+  }
+}
+
+' Feature Engineering Pipeline
+package "Feature Engineering Pipeline" as feature_pipeline #fff3e0 {
+  component "Data Preprocessing" as preprocessing {
+    component "Data Cleaning" as cleaning
+    component "Privacy Filtering" as privacy_filter
+    component "Outlier Detection" as outlier_detection
+    component "Missing Value Imputation" as imputation
+  }
+  
+  component "Feature Extraction" as extraction {
+    component "Behavioral Features" as behavioral_features
+    component "Temporal Features" as temporal_features
+    component "Contextual Features" as contextual_features
+    component "Interaction Features" as interaction_features
+  }
+  
+  component "Feature Selection" as selection {
+    component "Statistical Selection" as statistical_selection
+    component "Correlation Analysis" as correlation_analysis
+    component "Bias Detection" as feature_bias_detection
+    component "Educational Relevance" as educational_relevance
+  }
+  
+  component "Feature Validation" as feature_validation {
+    component "Data Quality Checks" as quality_checks
+    component "Bias Auditing" as bias_auditing
+    component "Educational Validity" as educational_validity
+    component "Privacy Compliance" as privacy_compliance
+  }
+}
+
+' ML Model Development
+package "ML Model Development" as model_development #f3e5f5 {
+  component "Personalization Models" as personalization_models {
+    component "Learning Path Optimization\n(Multi-Armed Bandit)" as path_optimization
+    component "Content Recommendation\n(Collaborative Filtering)" as content_recommendation
+    component "Difficulty Adaptation\n(Reinforcement Learning)" as difficulty_adaptation
+    component "Engagement Prediction\n(Neural Networks)" as engagement_prediction
+  }
+  
+  component "Assessment Models" as assessment_models {
+    component "Knowledge Estimation\n(Item Response Theory)" as knowledge_estimation
+    component "Competency Prediction\n(Bayesian Networks)" as competency_prediction
+    component "Mastery Detection\n(Hidden Markov Models)" as mastery_detection
+    component "Progress Forecasting\n(Time Series)" as progress_forecasting
+  }
+  
+  component "Bias Detection Models" as bias_models {
+    component "Demographic Parity\n(Statistical Tests)" as demographic_parity
+    component "Equalized Opportunity\n(ML Fairness)" as equalized_opportunity
+    component "Assessment Bias\n(DIF Analysis)" as assessment_bias
+    component "Algorithmic Auditing\n(Adversarial ML)" as algorithmic_auditing
+  }
+  
+  component "Intervention Models" as intervention_models {
+    component "At-Risk Identification\n(Ensemble Methods)" as at_risk_identification
+    component "Intervention Recommendation\n(Decision Trees)" as intervention_recommendation
+    component "Success Prediction\n(Gradient Boosting)" as success_prediction
+    component "Adaptation Triggers\n(Threshold Models)" as adaptation_triggers
+  }
+}
+
+' Model Training Infrastructure
+package "Model Training Infrastructure" as training_infra #e1f5fe {
+  component "Training Orchestration" as orchestration {
+    component "Kubeflow Pipelines" as kubeflow
+    component "MLflow Tracking" as mlflow
+    component "Experiment Management" as experiments
+    component "Hyperparameter Tuning" as hyperparams
+  }
+  
+  component "Distributed Training" as distributed_training {
+    component "TensorFlow Distributed" as tf_distributed
+    component "PyTorch DDP" as pytorch_ddp
+    component "Ray Train" as ray_train
+    component "Spark MLlib" as spark_mllib
+  }
+  
+  component "Model Validation" as model_validation {
+    component "Cross-Validation" as cross_validation
+    component "Educational Evaluation" as educational_eval
+    component "Bias Testing" as bias_testing
+    component "A/B Testing Framework" as ab_testing_framework
+  }
+  
+  component "AutoML & Neural Architecture Search" as automl {
+    component "Feature Engineering AutoML" as feature_automl
+    component "Model Selection" as model_selection
+    component "Architecture Search" as nas
+    component "Automated Bias Detection" as automated_bias
+  }
+}
+
+' Model Serving & Inference
+package "Model Serving & Inference" as model_serving #f0f8ff {
+  component "Real-time Serving" as realtime_serving {
+    component "TensorFlow Serving" as tf_serving
+    component "PyTorch Serve" as pytorch_serve
+    component "ONNX Runtime" as onnx_runtime
+    component "Custom Inference API" as custom_inference
+  }
+  
+  component "Batch Inference" as batch_inference {
+    component "Spark Batch Jobs" as spark_batch
+    component "Scheduled Predictions" as scheduled_predictions
+    component "Offline Evaluation" as offline_evaluation
+    component "Bulk Processing" as bulk_processing
+  }
+  
+  component "Edge Inference" as edge_inference {
+    component "Mobile ML Models" as mobile_ml
+    component "Browser ML (WASM)" as browser_ml
+    component "Offline Predictions" as offline_predictions
+    component "Edge Optimization" as edge_optimization
+  }
+  
+  component "Model Monitoring" as model_monitoring {
+    component "Performance Monitoring" as perf_monitoring
+    component "Drift Detection" as drift_detection
+    component "Bias Monitoring" as bias_monitoring
+    component "Educational Impact Tracking" as impact_tracking
+  }
+}
+
+' Feature Store & Model Registry
+package "ML Data Management" as ml_data_mgmt #f5f5f5 {
+  component "Feature Store (Feast)" as feature_store {
+    component "Online Feature Store\n(Redis)" as online_features
+    component "Offline Feature Store\n(S3/BigQuery)" as offline_features
+    component "Feature Registry" as feature_registry
+    component "Feature Lineage" as feature_lineage
+  }
+  
+  component "Model Registry (MLflow)" as model_registry {
+    component "Model Versioning" as model_versioning
+    component "Model Metadata" as model_metadata
+    component "Model Staging" as model_staging
+    component "Model Approval" as model_approval
+  }
+  
+  component "Training Data Management" as training_data_mgmt {
+    component "Data Versioning (DVC)" as data_versioning
+    component "Dataset Registry" as dataset_registry
+    component "Privacy-Safe Datasets" as privacy_safe_datasets
+    component "Synthetic Data Generation" as synthetic_data
+  }
+}
+
+' Ethical AI & Governance
+package "Ethical AI & Governance" as ethical_ai #fff0f0 {
+  component "Bias Detection & Mitigation" as bias_detection {
+    component "Fairness Metrics" as fairness_metrics
+    component "Bias Mitigation Strategies" as bias_mitigation
+    component "Demographic Analysis" as demographic_analysis
+    component "Intersectional Fairness" as intersectional_fairness
+  }
+  
+  component "Explainable AI" as explainable_ai {
+    component "Model Interpretability" as interpretability
+    component "Feature Importance" as feature_importance
+    component "Decision Explanations" as decision_explanations
+    component "Educational Transparency" as educational_transparency
+  }
+  
+  component "AI Governance" as ai_governance {
+    component "Model Approval Process" as approval_process
+    component "Ethical Review Board" as ethics_board
+    component "Impact Assessment" as impact_assessment
+    component "Compliance Monitoring" as compliance_monitoring
+  }
+  
+  component "Human-in-the-Loop" as human_loop {
+    component "Expert Validation" as expert_validation
+    component "Teacher Override" as teacher_override
+    component "Student Feedback" as student_feedback
+    component "Continuous Learning" as continuous_learning
+  }
+}
+
+' Data Flow Connections
+
+' Sources to Feature Pipeline
+learning_data --> preprocessing : raw interaction data
+profile_data --> preprocessing : student profiles
+assessment_ml_data --> preprocessing : assessment results
+content_metadata --> preprocessing : content features
+
+' Feature Pipeline Flow
+preprocessing --> extraction : clean data
+extraction --> selection : extracted features
+selection --> feature_validation : selected features
+feature_validation --> feature_store : validated features
+
+' Feature Store to Models
+feature_store --> personalization_models : online features
+feature_store --> assessment_models : online features
+feature_store --> bias_models : online features
+feature_store --> intervention_models : online features
+
+' Model Development Flow
+personalization_models --> training_infra : training jobs
+assessment_models --> training_infra : training jobs
+bias_models --> training_infra : training jobs
+intervention_models --> training_infra : training jobs
+
+' Training Infrastructure
+orchestration --> distributed_training : coordinate training
+distributed_training --> model_validation : trained models
+model_validation --> model_registry : validated models
+automl --> model_selection : automated selection
+
+' Model Serving
+model_registry --> realtime_serving : production models
+model_registry --> batch_inference : batch models
+model_registry --> edge_inference : edge models
+
+' Monitoring and Feedback
+realtime_serving --> model_monitoring : inference metrics
+batch_inference --> model_monitoring : batch metrics
+model_monitoring --> bias_detection : bias alerts
+model_monitoring --> training_infra : retrain triggers
+
+' Ethical AI Integration
+bias_models --> bias_detection : bias predictions
+explainable_ai --> realtime_serving : explanations
+ai_governance --> model_registry : approval gates
+human_loop --> continuous_learning : feedback
+
+' Real-time Applications
+realtime_serving --> learning_data : adaptation decisions
+realtime_serving --> assessment_ml_data : assessment adaptations
+bias_detection --> intervention_models : bias interventions
+
+' Notes and Specifications
+note right of personalization_models : Multi-objective optimization:\n- Learning effectiveness\n- Engagement\n- Accessibility\n- Fairness
+
+note right of bias_models : Continuous monitoring:\n- Demographic parity\n- Equal opportunity\n- Calibration\n- Individual fairness
+
+note right of feature_store : <10ms feature serving\nfor real-time inference\nwith consistency guarantees
+
+note right of realtime_serving : <200ms inference latency\nwith 99.9% availability\nand automatic fallback
+
+note bottom of ethical_ai : Human oversight required\nfor all high-stakes decisions\nwith audit trails
+
+' Performance Specifications
+note top of distributed_training : GPU cluster training\nwith automatic scaling\nbased on job queue
+
+note top of model_monitoring : Real-time drift detection\nwith automatic retraining\ntriggers at 5% degradation
+
+' Privacy and Compliance
+note bottom of privacy_safe_datasets : Differential privacy\nwith ε ≤ 1.0\nfor all training data
+
+@enduml

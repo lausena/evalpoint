@@ -1,0 +1,302 @@
+@startuml EvalPoint Security Architecture
+!theme aws-orange
+
+title EvalPoint - Security Architecture\nZero-Trust Security with Educational Data Privacy Compliance
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #dc3545
+skinparam noteBackgroundColor #f8d7da
+skinparam noteBorderColor #dc3545
+
+' External Threat Landscape
+cloud "Internet & External Threats" as external_threats {
+  actor "Malicious Actors" as attackers #ffcccc
+  component "DDoS Attacks" as ddos_attacks
+  component "Data Breaches" as data_breaches
+  component "Social Engineering" as social_engineering
+  component "API Attacks" as api_attacks
+}
+
+' Edge Security Layer
+package "Edge Security Layer" as edge_security #ffe6e6 {
+  component "CloudFlare Security" as cloudflare {
+    component "DDoS Protection" as ddos_protection
+    component "Web Application Firewall" as waf
+    component "Bot Management" as bot_management
+    component "Rate Limiting" as edge_rate_limiting
+  }
+  
+  component "DNS Security" as dns_security {
+    component "DNS Filtering" as dns_filtering
+    component "DNS over HTTPS" as dns_https
+    component "Malware Protection" as malware_protection
+    component "Phishing Protection" as phishing_protection
+  }
+  
+  component "SSL/TLS Termination" as ssl_termination {
+    component "TLS 1.3 Encryption" as tls13
+    component "Certificate Management" as cert_management
+    component "Perfect Forward Secrecy" as pfs
+    component "HSTS Headers" as hsts
+  }
+}
+
+' Network Security Layer
+package "Network Security Layer" as network_security #fff2f2 {
+  component "VPC & Network Isolation" as vpc {
+    component "Private Subnets" as private_subnets
+    component "Public Subnets" as public_subnets
+    component "NAT Gateways" as nat_gateways
+    component "Network ACLs" as network_acls
+  }
+  
+  component "Load Balancers" as load_balancers {
+    component "Application Load Balancer" as alb
+    component "Network Load Balancer" as nlb
+    component "Geographic Distribution" as geo_distribution
+    component "Health Checks" as health_checks
+  }
+  
+  component "Service Mesh Security" as service_mesh {
+    component "Istio Security" as istio_security
+    component "mTLS Communication" as mtls
+    component "Service-to-Service Auth" as service_auth
+    component "Traffic Encryption" as traffic_encryption
+  }
+}
+
+' Application Security Layer
+package "Application Security Layer" as app_security #ffebee {
+  component "API Gateway Security" as api_gateway_security {
+    component "OAuth 2.0 / OpenID Connect" as oauth
+    component "JWT Token Validation" as jwt_validation
+    component "API Rate Limiting" as api_rate_limiting
+    component "Request Validation" as request_validation
+  }
+  
+  component "Application Security" as application_security {
+    component "Input Validation" as input_validation
+    component "Output Encoding" as output_encoding
+    component "CSRF Protection" as csrf_protection
+    component "Content Security Policy" as csp
+  }
+  
+  component "Container Security" as container_security {
+    component "Image Scanning" as image_scanning
+    component "Runtime Security" as runtime_security
+    component "Pod Security Standards" as pod_security
+    component "Network Policies" as network_policies
+  }
+}
+
+' Identity & Access Management
+package "Identity & Access Management" as iam #f3e5f5 {
+  component "Authentication Services" as auth_services {
+    component "Multi-Factor Authentication" as mfa
+    component "Single Sign-On (SAML)" as sso
+    component "Educational Identity Federation" as edu_federation
+    component "Passwordless Authentication" as passwordless
+  }
+  
+  component "Authorization & RBAC" as rbac {
+    component "Role-Based Access Control" as role_based_access
+    component "Attribute-Based Access Control" as abac
+    component "Fine-Grained Permissions" as fine_grained_perms
+    component "Dynamic Authorization" as dynamic_auth
+  }
+  
+  component "Privileged Access Management" as pam {
+    component "Just-in-Time Access" as jit_access
+    component "Privileged Session Recording" as session_recording
+    component "Break-Glass Procedures" as break_glass
+    component "Administrative Oversight" as admin_oversight
+  }
+  
+  component "Identity Verification" as identity_verification {
+    component "Age Verification (COPPA)" as age_verification
+    component "Student Identity Validation" as student_validation
+    component "Educator Credentials" as educator_credentials
+    component "Family Relationship Verification" as family_verification
+  }
+}
+
+' Data Protection Layer
+package "Data Protection Layer" as data_protection #e8f5e8 {
+  component "Encryption Services" as encryption {
+    component "Data at Rest (AES-256)" as encryption_rest
+    component "Data in Transit (TLS 1.3)" as encryption_transit
+    component "Database Encryption" as db_encryption
+    component "Field-Level Encryption" as field_encryption
+  }
+  
+  component "Key Management" as key_management {
+    component "Hardware Security Modules" as hsm
+    component "Key Rotation" as key_rotation
+    component "Key Escrow" as key_escrow
+    component "Cryptographic Standards" as crypto_standards
+  }
+  
+  component "Data Classification" as data_classification {
+    component "PII Classification" as pii_classification
+    component "Educational Record Classification" as edu_record_classification
+    component "Sensitive Data Tagging" as sensitive_tagging
+    component "Data Loss Prevention" as dlp
+  }
+  
+  component "Privacy Controls" as privacy_controls {
+    component "Data Minimization" as data_minimization
+    component "Purpose Limitation" as purpose_limitation
+    component "Consent Management" as consent_management
+    component "Right to Erasure" as right_erasure
+  }
+}
+
+' Compliance & Governance
+package "Compliance & Governance" as compliance #fff8e1 {
+  component "Educational Privacy Compliance" as edu_privacy {
+    component "FERPA Compliance" as ferpa_compliance
+    component "COPPA Compliance" as coppa_compliance
+    component "GDPR Compliance" as gdpr_compliance
+    component "State Privacy Laws" as state_privacy
+  }
+  
+  component "Security Compliance" as security_compliance {
+    component "SOC 2 Type II" as soc2
+    component "ISO 27001" as iso27001
+    component "NIST Cybersecurity Framework" as nist
+    component "Educational Security Standards" as edu_security_standards
+  }
+  
+  component "Audit & Monitoring" as audit_monitoring {
+    component "Security Information and Event Management" as siem
+    component "User Activity Monitoring" as user_activity_monitoring
+    component "Data Access Logging" as data_access_logging
+    component "Compliance Reporting" as compliance_reporting
+  }
+  
+  component "Incident Response" as incident_response {
+    component "24/7 Security Operations Center" as soc
+    component "Automated Threat Detection" as threat_detection
+    component "Incident Classification" as incident_classification
+    component "Breach Notification Procedures" as breach_notification
+  }
+}
+
+' Security Monitoring & Analytics
+package "Security Monitoring & Analytics" as security_monitoring #f0f8ff {
+  component "Threat Intelligence" as threat_intelligence {
+    component "Threat Feeds" as threat_feeds
+    component "Behavioral Analytics" as behavioral_analytics
+    component "Anomaly Detection" as anomaly_detection
+    component "Risk Scoring" as risk_scoring
+  }
+  
+  component "Security Analytics" as security_analytics {
+    component "Machine Learning for Security" as ml_security
+    component "Pattern Recognition" as pattern_recognition
+    component "Predictive Threat Modeling" as predictive_threats
+    component "Security Dashboards" as security_dashboards
+  }
+  
+  component "Vulnerability Management" as vulnerability_mgmt {
+    component "Automated Vulnerability Scanning" as vuln_scanning
+    component "Penetration Testing" as pen_testing
+    component "Security Code Review" as code_review
+    component "Dependency Scanning" as dependency_scanning
+  }
+}
+
+' User Security Endpoints
+package "User Security Endpoints" as user_endpoints #f5f5f5 {
+  component "Student Device Security" as student_devices {
+    component "Device Management (MDM)" as mdm
+    component "App Security Policies" as app_security_policies
+    component "Content Filtering" as content_filtering
+    component "Screen Time Controls" as screen_time
+  }
+  
+  component "Educator Device Security" as educator_devices {
+    component "Endpoint Protection" as endpoint_protection
+    component "VPN Access" as vpn_access
+    component "Security Awareness Training" as security_training
+    component "Incident Reporting" as incident_reporting
+  }
+  
+  component "Family Access Security" as family_security {
+    component "Secure Family Portals" as secure_family_portals
+    component "Parental Controls" as parental_controls
+    component "Privacy Education" as privacy_education
+    component "Communication Security" as communication_security
+  }
+}
+
+' Security Data Flow
+
+' External threats to edge security
+external_threats --> edge_security : attacks blocked
+ddos_attacks --> ddos_protection : mitigation
+api_attacks --> waf : filtering
+social_engineering --> dns_security : protection
+
+' Edge security to network security
+edge_security --> network_security : filtered traffic
+ssl_termination --> vpc : encrypted traffic
+cloudflare --> load_balancers : protected requests
+
+' Network security to application security
+network_security --> app_security : network-level security
+service_mesh --> api_gateway_security : service authentication
+mtls --> application_security : encrypted communication
+
+' Application security to IAM
+app_security --> iam : authentication requests
+oauth --> auth_services : token validation
+request_validation --> rbac : authorization checks
+
+' IAM to data protection
+iam --> data_protection : authenticated access
+rbac --> encryption : authorized data access
+identity_verification --> privacy_controls : verified access
+
+' Data protection to compliance
+data_protection --> compliance : compliance validation
+encryption --> edu_privacy : privacy protection
+privacy_controls --> audit_monitoring : audit trails
+
+' Security monitoring integration
+security_monitoring --> incident_response : threat alerts
+threat_intelligence --> security_analytics : threat data
+vulnerability_mgmt --> compliance : security assessments
+
+' User endpoints security
+user_endpoints --> iam : device authentication
+student_devices --> app_security : app-level security
+educator_devices --> network_security : VPN connections
+
+' Internal security flows
+audit_monitoring --> security_analytics : security logs
+security_analytics --> threat_intelligence : intelligence updates
+incident_response --> vulnerability_mgmt : incident feedback
+
+' Notes with Security Specifications
+note right of edge_security : Protection against:\n- 100+ Gbps DDoS attacks\n- OWASP Top 10 vulnerabilities\n- Automated bot attacks\n- Geographic restrictions
+
+note right of encryption : Encryption standards:\n- AES-256 for data at rest\n- TLS 1.3 for data in transit\n- End-to-end encryption\n- Forward secrecy
+
+note right of edu_privacy : Educational privacy:\n- FERPA directory information\n- COPPA parental consent\n- GDPR data subject rights\n- Student data ownership
+
+note right of incident_response : Response times:\n- Critical: 15 minutes\n- High: 1 hour\n- Medium: 4 hours\n- Low: 24 hours
+
+' Zero Trust Principles
+note top of service_mesh : Zero Trust Architecture:\n- Never trust, always verify\n- Least privilege access\n- Assume breach mindset\n- Continuous verification
+
+' Compliance Requirements
+note bottom of compliance : Compliance certifications:\n- SOC 2 Type II (annual)\n- ISO 27001 (triennial)\n- FERPA (ongoing)\n- COPPA (ongoing)
+
+' Security Metrics
+note bottom of security_monitoring : Security KPIs:\n- Mean Time to Detection: <15 min\n- Mean Time to Response: <1 hour\n- False Positive Rate: <5%\n- Security Training Completion: 100%
+
+@enduml

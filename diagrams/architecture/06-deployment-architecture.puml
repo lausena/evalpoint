@@ -1,0 +1,326 @@
+@startuml EvalPoint Deployment Architecture
+!theme aws-orange
+
+title EvalPoint - Deployment Architecture\nMulti-Cloud, Multi-Region, Auto-Scaling Infrastructure
+
+skinparam backgroundColor #f8f9fa
+skinparam componentStyle rectangle
+skinparam rectangleBackgroundColor #ffffff
+skinparam rectangleBorderColor #6c757d
+skinparam arrowColor #007bff
+skinparam noteBackgroundColor #d4edda
+skinparam noteBorderColor #28a745
+
+' Global Infrastructure
+package "Global Infrastructure" as global_infra #e8f5e8 {
+  component "Global DNS & CDN" as global_dns {
+    component "Route 53 / CloudFlare DNS" as dns
+    component "Global Load Balancer" as global_lb
+    component "GeoDNS Routing" as geodns
+    component "Health Check & Failover" as health_failover
+  }
+  
+  component "Content Delivery Network" as cdn {
+    component "CloudFlare Edge Locations" as edge_locations
+    component "Static Content Cache" as static_cache
+    component "Dynamic Content Cache" as dynamic_cache
+    component "Edge Computing Functions" as edge_functions
+  }
+  
+  component "Cross-Region Connectivity" as cross_region {
+    component "AWS Global Accelerator" as global_accelerator
+    component "Inter-Region VPC Peering" as vpc_peering
+    component "Cross-Region Replication" as cross_replication
+    component "Global Database Clusters" as global_db
+  }
+}
+
+' Primary Region: US-East (Virginia)
+package "Primary Region: US-East-1" as us_east #e3f2fd {
+  package "Production Environment" as us_prod {
+    component "Kubernetes Cluster (EKS)" as us_k8s {
+      component "Control Plane (Managed)" as us_control_plane
+      component "Worker Nodes (Auto-Scaling)" as us_workers
+      component "Spot Instances (Cost Optimization)" as us_spot
+      component "GPU Nodes (ML Workloads)" as us_gpu
+    }
+    
+    component "Application Services" as us_apps {
+      component "Learning Engine Pods" as us_learning
+      component "Assessment Service Pods" as us_assessment
+      component "Analytics Service Pods" as us_analytics
+      component "Content Management Pods" as us_content
+    }
+    
+    component "Data Layer" as us_data {
+      database "RDS PostgreSQL (Multi-AZ)" as us_postgres
+      database "DocumentDB (MongoDB)" as us_mongodb
+      database "ElastiCache Redis" as us_redis
+      database "Elasticsearch Service" as us_elasticsearch
+    }
+    
+    component "ML Infrastructure" as us_ml {
+      component "SageMaker Training" as us_sagemaker
+      component "Model Endpoints" as us_ml_endpoints
+      component "Feature Store" as us_feature_store
+      component "MLflow Registry" as us_mlflow
+    }
+  }
+  
+  package "Staging Environment" as us_staging {
+    component "Staging Kubernetes" as us_staging_k8s
+    component "Staging Applications" as us_staging_apps
+    component "Staging Databases" as us_staging_db
+    component "Testing Infrastructure" as us_testing
+  }
+  
+  package "Development Environment" as us_dev {
+    component "Dev Kubernetes" as us_dev_k8s
+    component "Dev Applications" as us_dev_apps
+    component "Dev Databases" as us_dev_db
+    component "CI/CD Pipeline" as us_cicd
+  }
+}
+
+' Secondary Region: EU-West (Ireland)
+package "Secondary Region: EU-West-1" as eu_west #fff3e0 {
+  package "Production Environment" as eu_prod {
+    component "Kubernetes Cluster (EKS)" as eu_k8s {
+      component "Control Plane (Managed)" as eu_control_plane
+      component "Worker Nodes (Auto-Scaling)" as eu_workers
+      component "Spot Instances" as eu_spot
+      component "GPU Nodes" as eu_gpu
+    }
+    
+    component "Application Services" as eu_apps {
+      component "Learning Engine Pods" as eu_learning
+      component "Assessment Service Pods" as eu_assessment
+      component "Analytics Service Pods" as eu_analytics
+      component "Content Management Pods" as eu_content
+    }
+    
+    component "Data Layer" as eu_data {
+      database "RDS PostgreSQL (Read Replica)" as eu_postgres
+      database "DocumentDB (Replica)" as eu_mongodb
+      database "ElastiCache Redis" as eu_redis
+      database "Elasticsearch (Cross-Region)" as eu_elasticsearch
+    }
+    
+    component "ML Infrastructure" as eu_ml {
+      component "SageMaker Endpoints" as eu_ml_endpoints
+      component "Feature Store Replica" as eu_feature_store
+      component "Model Cache" as eu_model_cache
+    }
+  }
+  
+  package "Disaster Recovery" as eu_dr {
+    component "DR Kubernetes" as eu_dr_k8s
+    component "DR Applications" as eu_dr_apps
+    component "DR Databases" as eu_dr_db
+    component "Backup Systems" as eu_backup
+  }
+}
+
+' Tertiary Region: Asia-Pacific (Sydney)
+package "Tertiary Region: AP-Southeast-2" as ap_southeast #f3e5f5 {
+  package "Production Environment" as ap_prod {
+    component "Kubernetes Cluster (EKS)" as ap_k8s {
+      component "Control Plane (Managed)" as ap_control_plane
+      component "Worker Nodes (Auto-Scaling)" as ap_workers
+      component "Spot Instances" as ap_spot
+    }
+    
+    component "Application Services" as ap_apps {
+      component "Learning Engine Pods" as ap_learning
+      component "Assessment Service Pods" as ap_assessment
+      component "Analytics Service Pods" as ap_analytics
+      component "Content Management Pods" as ap_content
+    }
+    
+    component "Data Layer" as ap_data {
+      database "RDS PostgreSQL (Read Replica)" as ap_postgres
+      database "DocumentDB (Replica)" as ap_mongodb
+      database "ElastiCache Redis" as ap_redis
+      database "Elasticsearch (Cross-Region)" as ap_elasticsearch
+    }
+    
+    component "Edge Computing" as ap_edge {
+      component "Edge ML Inference" as ap_edge_ml
+      component "Local Content Cache" as ap_edge_cache
+      component "Latency Optimization" as ap_latency_opt
+    }
+  }
+}
+
+' Multi-Cloud Backup: Google Cloud Platform
+package "Multi-Cloud Backup: GCP" as gcp_backup #e1f5fe {
+  component "GKE Cluster (Standby)" as gcp_k8s
+  component "Cloud SQL (Backup)" as gcp_sql
+  component "Cloud Storage (Archive)" as gcp_storage
+  component "AI Platform (ML Backup)" as gcp_ml
+  component "Disaster Recovery Automation" as gcp_dr
+}
+
+' Monitoring & Observability
+package "Global Monitoring & Observability" as monitoring #f5f5f5 {
+  component "Centralized Monitoring" as central_monitoring {
+    component "Prometheus Federation" as prometheus_fed
+    component "Grafana Global Dashboards" as grafana_global
+    component "Alert Manager" as alert_manager
+    component "PagerDuty Integration" as pagerduty
+  }
+  
+  component "Logging Infrastructure" as logging {
+    component "Elasticsearch Cluster" as log_elasticsearch
+    component "Logstash Processing" as logstash
+    component "Kibana Dashboards" as kibana
+    component "Log Retention Policies" as log_retention
+  }
+  
+  component "Distributed Tracing" as tracing {
+    component "Jaeger Cluster" as jaeger
+    component "OpenTelemetry Collectors" as otel_collectors
+    component "Trace Analysis" as trace_analysis
+    component "Performance Insights" as perf_insights
+  }
+  
+  component "Business Metrics" as business_metrics {
+    component "Learning Analytics Dashboard" as learning_dashboard
+    component "Accessibility Metrics" as accessibility_metrics
+    component "User Engagement Tracking" as engagement_tracking
+    component "Educational Outcome Metrics" as outcome_metrics
+  }
+}
+
+' DevOps & CI/CD Infrastructure
+package "DevOps & CI/CD Infrastructure" as devops #fff0f0 {
+  component "Source Control & CI/CD" as cicd {
+    component "GitHub Enterprise" as github
+    component "GitHub Actions" as github_actions
+    component "Docker Registry" as docker_registry
+    component "Helm Chart Repository" as helm_repo
+  }
+  
+  component "GitOps Deployment" as gitops {
+    component "ArgoCD (Multi-Cluster)" as argocd
+    component "Flux (Continuous Delivery)" as flux
+    component "Sealed Secrets" as sealed_secrets
+    component "Config Management" as config_mgmt
+  }
+  
+  component "Infrastructure as Code" as iac {
+    component "Terraform Cloud" as terraform
+    component "AWS CloudFormation" as cloudformation
+    component "Kubernetes Manifests" as k8s_manifests
+    component "Environment Promotion" as env_promotion
+  }
+  
+  component "Security & Compliance" as devops_security {
+    component "Container Security Scanning" as container_scanning
+    component "Infrastructure Security" as infra_security
+    component "Compliance Automation" as compliance_automation
+    component "Secret Management" as secret_mgmt
+  }
+}
+
+' Network Architecture
+package "Network Architecture" as network_arch #f8f9fa {
+  component "Global Network" as global_network {
+    component "Transit Gateways" as transit_gateways
+    component "VPC Peering" as vpc_peering_network
+    component "Private Network Connectivity" as private_connectivity
+    component "Network Segmentation" as network_segmentation
+  }
+  
+  component "Load Balancing" as load_balancing {
+    component "Application Load Balancers" as alb_network
+    component "Network Load Balancers" as nlb_network
+    component "Global Load Balancing" as global_lb_network
+    component "Traffic Distribution" as traffic_distribution
+  }
+  
+  component "Security & Compliance" as network_security {
+    component "Web Application Firewall" as waf_network
+    component "DDoS Protection" as ddos_network
+    component "Network Access Control" as network_acl
+    component "VPN & Private Access" as vpn_network
+  }
+}
+
+' Deployment Flow Connections
+
+' Global infrastructure connections
+global_dns --> us_east : primary routing
+global_dns --> eu_west : EU traffic routing
+global_dns --> ap_southeast : APAC traffic routing
+
+cdn --> us_east : content delivery
+cdn --> eu_west : content delivery
+cdn --> ap_southeast : content delivery
+
+' Cross-region connections
+us_prod --> eu_prod : data replication
+us_prod --> ap_prod : data replication
+us_prod --> gcp_backup : backup replication
+
+' Monitoring connections
+central_monitoring --> us_east : metrics collection
+central_monitoring --> eu_west : metrics collection
+central_monitoring --> ap_southeast : metrics collection
+
+' CI/CD connections
+cicd --> us_dev : development deployment
+cicd --> us_staging : staging deployment
+cicd --> us_prod : production deployment
+gitops --> eu_prod : EU deployment
+gitops --> ap_prod : APAC deployment
+
+' Auto-scaling flows
+us_k8s --> us_apps : pod scaling
+eu_k8s --> eu_apps : pod scaling
+ap_k8s --> ap_apps : pod scaling
+
+' Data replication flows
+us_postgres --> eu_postgres : read replica
+us_postgres --> ap_postgres : read replica
+us_mongodb --> eu_mongodb : document replication
+us_mongodb --> ap_mongodb : document replication
+
+' ML deployment flows
+us_ml --> eu_ml : model deployment
+us_ml --> ap_edge : edge model deployment
+us_mlflow --> eu_ml_endpoints : model serving
+
+' Backup and DR flows
+us_prod --> eu_dr : disaster recovery
+us_prod --> gcp_backup : multi-cloud backup
+eu_dr --> gcp_dr : automated failover
+
+' Network security flows
+network_security --> us_east : security policies
+network_security --> eu_west : security policies
+network_security --> ap_southeast : security policies
+
+' Notes with Deployment Specifications
+note right of us_k8s : Auto-scaling:\n- Min: 10 nodes\n- Max: 100 nodes\n- CPU target: 70%\n- Memory target: 80%
+
+note right of eu_k8s : Geo-distribution:\n- EU data residency\n- GDPR compliance\n- <50ms latency EU-wide\n- 99.9% availability
+
+note right of ap_k8s : Edge optimization:\n- CDN integration\n- Mobile-first design\n- Offline capabilities\n- Low-bandwidth support
+
+note right of global_dns : Traffic routing:\n- Latency-based routing\n- Health check failover\n- Geographic restrictions\n- Educational compliance
+
+' Scalability specifications
+note top of us_workers : Node specifications:\n- m5.xlarge (standard)\n- c5.2xlarge (compute)\n- r5.xlarge (memory)\n- p3.2xlarge (GPU/ML)
+
+note top of monitoring : SLA targets:\n- 99.9% uptime\n- <200ms response time\n- <1% error rate\n- <15min MTTR
+
+' Disaster Recovery specifications
+note bottom of eu_dr : DR capabilities:\n- RTO: 15 minutes\n- RPO: 5 minutes\n- Auto-failover enabled\n- Cross-region backups
+
+note bottom of gcp_backup : Multi-cloud backup:\n- Daily snapshots\n- 7-year retention\n- Cross-cloud replication\n- Compliance archival
+
+' Cost optimization
+note bottom of us_spot : Cost optimization:\n- 40% spot instances\n- Reserved instances\n- Auto-shutdown dev/test\n- Resource rightsizing
+
+@enduml
