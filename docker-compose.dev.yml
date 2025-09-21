@@ -8,12 +8,16 @@
 # Development Services Configuration
 # =============================================================================
 services:
-  
+
   # ===========================================================================
   # MongoDB Development Service
   # Development database with relaxed security for testing
   # ===========================================================================
   mongodb:
+    image: mongo:7.0.4
+    container_name: evalpoint-mongodb-dev
+    restart: unless-stopped
+
     environment:
       # Development database credentials
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -28,9 +32,11 @@ services:
     volumes:
       - ./data/mongodb-dev:/data/db
       - ./logs/mongodb-dev:/var/log/mongodb
-      - ./docker/mongodb/mongod-dev.conf:/etc/mongod.conf:ro
-    
-    command: ["mongod", "--config", "/etc/mongod.conf"]
+
+    networks:
+      - evalpoint-network
+
+    command: ["mongod"]
     
     # Faster health checks for development
     healthcheck:
@@ -56,6 +62,8 @@ services:
   # ===========================================================================
   backend:
     build:
+      context: ./backend
+      dockerfile: Dockerfile
       target: development
     
     environment:
@@ -101,6 +109,16 @@ services:
       
       # Development tools
       - ./backend/nodemon.json:/app/nodemon.json:ro
+
+    container_name: evalpoint-backend-dev
+    restart: unless-stopped
+
+    networks:
+      - evalpoint-network
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
     
     # Faster health checks for development
     healthcheck:
@@ -173,6 +191,10 @@ services:
   # Development cache with relaxed security
   # ===========================================================================
   redis:
+    image: redis:7.2.3-alpine
+    container_name: evalpoint-redis-dev
+    restart: unless-stopped
+
     environment:
       REDIS_PASSWORD: devredispassword
     
@@ -181,7 +203,10 @@ services:
     
     volumes:
       - ./data/redis-dev:/data
-    
+
+    networks:
+      - evalpoint-network
+
     command: ["redis-server", "--requirepass", "devredispassword"]
 
   # ===========================================================================

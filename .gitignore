@@ -69,3 +69,6 @@ temp/
 
 # Documentation artifacts (keep examples)
 .claude/docs/papers
+
+# mongodb data
+data
